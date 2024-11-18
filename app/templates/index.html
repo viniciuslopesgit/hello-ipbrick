@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-Vindo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <center>
+        <header>
+            <img src="{{ url_for('static', filename='img/logo_ipbrick.jpeg') }}" alt="IPBRICK Logo">
+            <h3>IPBRICK OS</h3>
+        </header>
+        <div class="box-login">
+            <form method="POST" action="{{ url_for('login') }}">
+                <label for="username">Username</label><br>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Password</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit">Login</button>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <a href="{{ url_for('google_login') }}" class="l_gmail">Gmail</a>
+        </div>
+    </center>
+</body>
+</html>
