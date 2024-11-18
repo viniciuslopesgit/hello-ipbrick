@@ -7,22 +7,18 @@ import os
 load_dotenv()
 app = Flask(__name__)
 
-GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
-GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+
+
 
 app.secret_key = "app-secret.com"
 oauth = OAuth(app)
 google = oauth.register(
     name = 'google',
-    client_id = os.getenv('GOOGLE_CLIENT_ID'),
+    client_id = os.getenv('GOOGLE_ID'),
     client_secret = os.getenv('GOOGLE_CLIENT_SECRET'),
     server_metadata_url = 'https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs = {'scope': 'openid profile email'},
 )
-
-print(f"GOOGLE_CLIENT_ID: {GOOGLE_CLIENT_ID}")
-print(f"GOOGLE_CLIENT_SECRET: {GOOGLE_CLIENT_SECRET}")
-
 
 def load_users():
     with open('./users.json', 'r') as file:
@@ -42,8 +38,10 @@ def login():
             if user['username'] == username and user['password'] == password:
                 session['username'] = username
                 return redirect(url_for('dashboard'))
-        return render_template('index.html', error="Usuário ou senha incorretos")
-    return render_template('index.html')
+            else:
+                return render_template('index.html', error="Usuário ou senha incorretos")
+    else:
+        return render_template('index.html')
 
 @app.route('/google_login')
 def google_login():
@@ -58,12 +56,14 @@ def google_auth():
         user_info = user_info_resp.json()
         email = user_info.get('email')
         name = user_info.get('name')
+        session['google_id'] = user_info.get('sub')
         session['email'] = email
         session['name'] = name
         return redirect(url_for('dashboard'))
 
     except Exception as e:
         print("Erro durante a autenticação", e)
+        return redirect(url_for('login'))
 
 @app.route('/dashboard')
 def dashboard():
@@ -75,7 +75,9 @@ def dashboard():
         name = session.get("name")
         email = session.get("email")
         return render_template("dashboard.html", username=email, name=name)
-
+    else:
+        return redirect(url_for('index'))
+    
 @app.route('/logout')
 def logout():
     session.clear()

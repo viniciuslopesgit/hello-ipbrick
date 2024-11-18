@@ -77,10 +77,10 @@ label {
 
 button {
     margin-top: 20px;
-    width: 180px;
-    padding: 8px;
+    width: 200px;
+    padding: 10px;
     background-color: rgba(0, 0, 0, 0.918);
-    border-radius: 16px;
+    border-radius: 18px;
     color: aliceblue;
     border: none;
     display: block;
@@ -93,10 +93,10 @@ button:hover {
 
 .l_gmail {
     margin-top: 20px;
-    width: 180px;
-    padding: 8px;
+    width: 200px;
+    padding: 10px;
     background-color: rgb(0, 102, 255);
-    border-radius: 16px;
+    border-radius: 18px;
     color: aliceblue;
     border: none;
     display: block;
